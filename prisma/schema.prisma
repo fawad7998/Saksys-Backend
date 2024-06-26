@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  id                   Int        @id @default(autoincrement())
+  employee_id          Int
+  firstName            String
+  lastName             String
+  email                String
+  employee_Type        String
+  contract_No          String
+  contract_Start       String
+  contract_End         String
+  position             Position[]
+  isAcessToStaffPortal Boolean
+  mobile               Int?
+  street_Name          String?
+  apartment_Number     Int?
+  mobile_Number        Int?
+  postCode             Int?
+  city                 String?
+  country              String?
+  gender               Gender
+  dateOfBirth          String
+  nationality          String
+  cityOfBirth          String
+  countryOfBirth       String
+  niNumber             Int
+  driverLisence        Boolean
+  isVisaRequiresd      Boolean
+  visaDescription      String
+  visaExpiryDate       String
+}
+
+model Position {
+  position_Id  Int      @id @default(autoincrement())
+  positionName String
+  employee_Id  Int
+  employee     Employee @relation(fields: [employee_Id], references: [id])
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  NONEBINARY
+  UNDISCLOSED
+}
+
+model GeoLocation {
+  id            Int             @id @default(autoincrement())
+  city          String
+  streetName    String
+  country       String
+  pointLocation PointLocation[]
+}
+
+model PointLocation {
+  id            Int          @id @default(autoincrement())
+  latitude      Int
+  longitude     Int
+  GeoLocation   GeoLocation? @relation(fields: [geoLocationId], references: [id])
+  geoLocationId Int?
+  type          String
+  time          DateTime
+}
+
+model InternalNotes {
+  internalNotes_id Int    @id @default(autoincrement())
+  profile_Id       Int
+  description      String
+  owner_Id         Int
+}
